@@ -1,7 +1,8 @@
-/*
-	 GPS Protocol Translator Firmware
-    Copyright (C)2008 Argent Data Systems - All Rights Reserved
+/**
+    @brief Black Rock City miles-to-go LCD bumper sticker thing
     
+    @author Scott Miller
+
     Port 1 - NMEA
     Port 2 - Garmin
     
