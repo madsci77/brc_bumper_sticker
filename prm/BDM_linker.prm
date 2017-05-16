@@ -1,0 +1,59 @@
+// MC9S08AW32 Linker File
+
+ENTRIES
+END
+
+NAMES
+END
+
+SECTIONS
+  Z_RAM  = READ_WRITE 0x0070 TO 0x00FF;		// Reserve low 16 bytes of RAM for bootstrap 
+  RAM    = READ_WRITE 0x0100 TO 0x086F;
+  ROM    = READ_ONLY  0x8000 TO 0xF9FF;  		// FA00-FDCB is config, FDCC - FDFF is relocated vector table  
+  BROM	= READ_ONLY  0xFE00 TO 0xFFAF;
+  NVPROTROM = READ_ONLY 0xFFBD TO 0xFFBD;
+  NVOPTROM  = READ_ONLY 0xFFBF TO 0xFFBF;
+END
+
+PLACEMENT
+  DEFAULT_ROM                   INTO ROM;
+  DEFAULT_RAM                   INTO RAM;
+  _DATA_ZEROPAGE, MY_ZEROPAGE   INTO Z_RAM;
+  BOOTSTRAP_ROM                 INTO BROM;
+  NVPROT_ROM						  INTO NVPROTROM;
+  NVOPT_ROM							  INTO NVOPTROM;
+END
+
+STACKSIZE 0x140
+
+// All interrupt vectors are redirected for easy updating
+
+//INIT bootloader_main
+
+VECTOR 0  _Startup
+VECTOR 1  NullHandler			// SWI
+VECTOR 2  IRQHandler				// IRQ
+VECTOR 3  NullHandler			// Low voltage detect
+VECTOR 4  NullHandler			// ICG
+VECTOR 5  NullHandler			// TPM1 Channel 0
+VECTOR 6  NullHandler			// TPM1 Channel 1
+VECTOR 7  NullHandler			// TPM1 Channel 2
+VECTOR 8  NullHandler			// TPM1 Channel 3
+VECTOR 9  NullHandler			// TPM1 Channel 4 
+VECTOR 10 NullHandler			// TPM1 Channel 5 
+VECTOR 11 NullHandler			// TPM1 Overflow 
+VECTOR 12 NullHandler			// TPM2 Channel 0
+VECTOR 13 NullHandler			// TPM2 Channel 1
+VECTOR 14 NullHandler			// TPM2 Overflow
+VECTOR 15 NullHandler			// SPI1
+VECTOR 16 NullHandler			// SCI1 Error
+VECTOR 17 RXhandler  			// SCI1 Receive
+VECTOR 18 NullHandler			// SCI1 Transmit
+VECTOR 19 NullHandler			// SCI2 Error
+VECTOR 20 RXhandler2			   // SCI2 Receive
+VECTOR 21 NullHandler			// SCI2 Transmit
+VECTOR 22 NullHandler			// KBI1
+VECTOR 23 NullHandler 			// ADC1 Conversion
+VECTOR 24 NullHandler			// IIC1
+VECTOR 25 tick						// RTI
+
